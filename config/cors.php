@@ -10,8 +10,9 @@ return [
     |
     */
     'supportsCredentials'    => false,
-    'allowedOrigins'         => ['http://localhost:3000'],
-    'allowedOriginsPatterns' => [],
+   // 'allowedOrigins'         => ['http://localhost:3000'],
+    'allowedOrigins'         => ['*'],
+    'allowedOriginsPatterns' => ['*'],
     'allowedHeaders'         => ['*'],
     'allowedMethods'         => ['*'],
     'exposedHeaders'         => [],
