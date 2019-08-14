@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
@@ -14,7 +16,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','register']]);
     }
 
     /**
@@ -31,6 +33,16 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+    public function register()
+    { 
+       User::create([
+           'name' => request('name'),
+           'email' => request('email'),
+           'password' => Hash::make(request('password')),
+
+       ]);
+        return $this->login(request());
     }
 
     /**
@@ -77,7 +89,9 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user'=>auth()->user()
+
         ]);
     }
 }
